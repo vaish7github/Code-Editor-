@@ -118,8 +118,12 @@
         "*.obj",
         "*.lib",
         "*.a",
+<<<<<<< HEAD
         "*.map",
         ".npmrc"
+=======
+        "*.map"
+>>>>>>> origin/main
     ],
     "default": {
         "default_prompt": "Enter your prompt here",

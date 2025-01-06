@@ -1,7 +1,7 @@
 export default {
     providers: [
       {
-        domain: "https://infinite-mouse-53.clerk.accounts.dev",
+        domain: "https://alert-stork-87.clerk.accounts.dev",
         applicationID: "convex",
       },
     ]
