@@ -1,9 +1,10 @@
-import {defineSchema, defineTable} from "convex/server"
+import {defineSchema, defineTable} from "convex/server";
 import {v} from "convex/values"
 export default defineSchema({
     users : defineTable({
         userId : v.string(), 
-        
+      
+        name : v.string() ,
         email : v.string() , 
         isPro : v.boolean() , 
         proSince : v.optional(v.number()) , 
@@ -41,4 +42,4 @@ export default defineSchema({
     .index("by_snippet_id", ["snippetId"])
     .index("by_user_id", ["userId"])
     .index("by_user_id_and_snippet_id", ["userId" , "snippetId"]) , 
-}) ; 
+}) ;  
