@@ -33,6 +33,7 @@ function ThemeSelector() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
   if (!mounted) return null;
 
   return (

@@ -100,13 +100,13 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => {
 
         console.log("data back from piston:", data);
 
-        // handle API-level erros
+        // handle API-level erros 
         if (data.message) {
           set({ error: data.message, executionResult: { code, output: "", error: data.message } });
           return;
         }
 
-        // handle compilation errors
+        // this part will be handling compilation errors
         if (data.compile && data.compile.code !== 0) {
           const error = data.compile.stderr || data.compile.output;
           set({
@@ -133,7 +133,7 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => {
           return;
         }
 
-        // if we get here, execution was successful
+        // now that we are here it means that the  execution was successful and we can further proceed 
         const output = data.run.output;
 
         set({

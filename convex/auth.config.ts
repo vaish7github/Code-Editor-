@@ -1,7 +1,7 @@
 export default {
     providers: [
       {
-        domain: "https://alert-stork-87.clerk.accounts.dev",
+        domain: "https://patient-gull-64.clerk.accounts.dev",
         applicationID: "convex",
       },
     ]
