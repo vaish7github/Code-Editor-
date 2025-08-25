@@ -30,7 +30,7 @@ export const createSnippet = mutation({
     return snippetId;
   },
 });
-
+// we are trying to delte snippets here using their ids 
 export const deleteSnippet = mutation({
   args: {
     snippetId: v.id("snippets"),
@@ -40,13 +40,17 @@ export const deleteSnippet = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
+
     const snippet = await ctx.db.get(args.snippetId);
     if (!snippet) throw new Error("Snippet not found");
 
     if (snippet.userId !== identity.subject) {
       throw new Error("Not authorized to delete this snippet");
+      // does the user own this snippet, if no they cant delete it 
     }
 
+
+    // get all the commments belonging to the snippet and then go on delelting them all
     const comments = await ctx.db
       .query("snippetComments")
       .withIndex("by_snippet_id")
@@ -56,7 +60,7 @@ export const deleteSnippet = mutation({
     for (const comment of comments) {
       await ctx.db.delete(comment._id);
     }
-
+// similarly fetch all the stars belongingi to this snippet and then delte it 
     const stars = await ctx.db
       .query("stars")
       .withIndex("by_snippet_id")
@@ -70,11 +74,13 @@ export const deleteSnippet = mutation({
     await ctx.db.delete(args.snippetId);
   },
 });
-
+// we can star a snippet here now using the id
 export const starSnippet = mutation({
   args: {
     snippetId: v.id("snippets"),
   },
+
+  // if it has already been starred, it will unstart it else start it 
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
@@ -87,7 +93,7 @@ export const starSnippet = mutation({
           q.eq(q.field("userId"), identity.subject) && q.eq(q.field("snippetId"), args.snippetId)
       )
       .first();
-
+// they have already starred it so wed like to unstar it 
     if (existing) {
       await ctx.db.delete(existing._id);
     } else {
@@ -146,7 +152,9 @@ export const deleteComment = mutation({
 export const getSnippets = query({
   handler: async (ctx) => {
     const snippets = await ctx.db.query("snippets").order("desc").collect();
+    // order of time when the snippet has been recorded
     return snippets;
+    // this will give us all our snippets back
   },
 });
 
@@ -174,29 +182,36 @@ export const getComments = query({
   },
 });
 
+// this query takes arg of snippet id 
+
 export const isSnippetStarred = query({
   args: {
     snippetId: v.id("snippets"),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
+    // if user is authenticated or not
     if (!identity) return false;
 
+    // this is a filter
     const star = await ctx.db
       .query("stars")
       .withIndex("by_user_id_and_snippet_id")
       .filter(
         (q) =>
-          q.eq(q.field("userId"), identity.subject) && q.eq(q.field("snippetId"), args.snippetId)
+          q.eq(q.field("userId"), identity.subject) && q.eq(q.field("snippetId"), args.snippetId) 
       )
       .first();
-
+      //we get the first result
     return !!star;
+    // return star, star is a value so we use !! to convert to true or false
   },
 });
 
+
+
 export const getSnippetStarCount = query({
-  args: { snippetId: v.id("snippets") },
+  args: { snippetId: v.id("snippets") }, // snippet id as an arg
   handler: async (ctx, args) => {
     const stars = await ctx.db
       .query("stars")
@@ -205,6 +220,7 @@ export const getSnippetStarCount = query({
       .collect();
 
     return stars.length;
+    //we get these snippets and return the length of stars
   },
 });
 

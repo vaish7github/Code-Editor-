@@ -1,3 +1,6 @@
+// this is basically just ui so no logic is involevd here
+
+
 "use client";
 
 import { SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
