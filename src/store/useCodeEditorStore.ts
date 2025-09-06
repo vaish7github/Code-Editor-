@@ -1,7 +1,7 @@
 import { CodeEditorState } from "./../types/index";
-import { LANGUAGE_CONFIG } from "../app/(root)/_constants";
 import { create } from "zustand";
 import { Monaco } from "@monaco-editor/react";
+import { LANGUAGE_CONFIG } from "../app/(root)/_constants";
 
 const getInitialState = () => {
   // if we're on the server, return default values
@@ -100,13 +100,13 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => {
 
         console.log("data back from piston:", data);
 
-        // handle API-level erros 
+        // handle API-level erros
         if (data.message) {
           set({ error: data.message, executionResult: { code, output: "", error: data.message } });
           return;
         }
 
-        // this part will be handling compilation errors
+        // handle compilation errors
         if (data.compile && data.compile.code !== 0) {
           const error = data.compile.stderr || data.compile.output;
           set({
@@ -133,7 +133,7 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => {
           return;
         }
 
-        // now that we are here it means that the  execution was successful and we can further proceed 
+        // if we get here, execution was successful
         const output = data.run.output;
 
         set({

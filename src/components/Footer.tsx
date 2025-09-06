@@ -1,6 +1,3 @@
-// since this is a ui we dont really type it out its a general layout for the footer of a page -- no logic at all
-// this is the footer component of the page 
-
 import { Blocks } from "lucide-react";
 import Link from "next/link";
 
